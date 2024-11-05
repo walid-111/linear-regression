@@ -15,7 +15,6 @@ class CarPricePredictor:
         self.model = {'slope': 0, 'intercept': 0}
         
     def load_data(self, file_path):
-        """Load and prepare the data from CSV file."""
         try:
             return pd.read_csv(file_path)
         except FileNotFoundError:
@@ -24,15 +23,12 @@ class CarPricePredictor:
 
     def normalize_data(self, values):
         """
-        Scale values to range [0,1] for better training.
-        
-        Why normalize?
+        Why scale to range [0,1]?
         1. Makes training more stable
         2. Prevents big numbers from having too much influence
         3. Helps gradient descent converge better
 
         How it works:
-        - Find min and max values
         - For each value: (value - min) / (max - min)
         - This makes smallest value = 0 and largest = 1
         """
