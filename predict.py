@@ -5,8 +5,12 @@ import json
 
 class CarPricePredictor:
     def __init__(self, model_file='model_params.json', data_file='data.csv'):
-        with open(model_file, 'r') as f:
-            self.model = json.load(f)
+        try:
+            with open(model_file, 'r') as f:
+                self.model = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("No trained model found, run train_model.py first (using 0 for now)")
+            self.model = {'slope': 0, 'intercept': 0}
         self.data = pd.read_csv(data_file)
     
     def predict_price(self, mileage):
