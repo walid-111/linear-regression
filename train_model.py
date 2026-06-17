@@ -1,7 +1,7 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+import sys
 import json
+import pandas as pd
+import numpy as np
 
 """
 Linear Regression finds the best-fitting line (by finding optimal slope and intercept) through our data points using
@@ -104,12 +104,13 @@ class CarPricePredictor:
         self.model['intercept'] = (intercept * (price_max - price_min) + price_min -  self.model['slope'] * mile_min)
 
 def main():
-    predictor = CarPricePredictor('data.csv')
+    data_file = sys.argv[1] if len(sys.argv) > 1 else 'data.csv'
+    predictor = CarPricePredictor(data_file)
     predictor.train_model()
     
-    # Save the model parameters
+    # Save the model parameters (+ which csv was used, so predict.py plots the same data)
     with open('model_params.json', 'w') as f:
-        json.dump(predictor.model, f)
+        json.dump({**predictor.model, 'data_file': data_file}, f)
     print("Model trained and saved!")
 
 if __name__ == "__main__":

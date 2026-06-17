@@ -11,7 +11,7 @@ class CarPricePredictor:
         except (FileNotFoundError, json.JSONDecodeError):
             print("No trained model found, run train_model.py first (using 0 for now)")
             self.model = {'slope': 0, 'intercept': 0}
-        self.data = pd.read_csv(data_file)
+        self.data = pd.read_csv(self.model.get('data_file', data_file))
     
     def predict_price(self, mileage):
         """Predict car price using trained model."""
