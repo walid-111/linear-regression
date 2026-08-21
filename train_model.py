@@ -34,6 +34,9 @@ class CarPricePredictor:
         """
         min_val = min(values)
         max_val = max(values)
+        if max_val == min_val:
+            # all values are the same, avoid dividing by 0
+            return values - min_val, min_val, min_val + 1
         return (values - min_val) / (max_val - min_val), min_val, max_val
 
     def train_model(self, learning_rate=0.1, epochs=1000):
@@ -43,33 +46,33 @@ class CarPricePredictor:
         - Goal: find the bottom of a valley blindfolded
         -> take small steps in the direction that reduces error
         -> repeat until limit
-    	--------------------------
-    	The Math Behind It:
-		a) Error Calculation (Mean Squared Error):
-			error = (actual_price - predicted_price)²
-			- We square it to:
-			* Make all errors positive (being too high or too low is bad)
-			* Punish big errors more than small ones
+        --------------------------
+        The Math Behind It:
+            a) Error Calculation (Mean Squared Error):
+                error = (actual_price - predicted_price)²
+                - We square it to:
+                * Make all errors positive (being too high or too low is bad)
+                * Punish big errors more than small ones
 
-		b) Gradient Calculation:
-			- Take derivative of error with respect to each parameter
-			- Tells us how to adjust parameters to reduce error
-			- For squared error (x²), derivative is 2x
-			- We multiply by -1 to go downhill (minimize)
-			
-		c) Update Rules:
-			slope = slope - learning_rate * slope_gradient
-			intercept = intercept - learning_rate * intercept_gradient
-			
-			If prediction too high:
-			- Error is negative
-			- Gradient = -2 * negative = positive
-			- Subtract positive = decrease parameter
-			
-			If prediction too low:
-			- Error is positive
-			- Gradient = -2 * positive = negative
-			- Subtract negative = add positive = increase parameter
+            b) Gradient Calculation:
+                - Take derivative of error with respect to each parameter
+                - Tells us how to adjust parameters to reduce error
+                - For squared error (x²), derivative is 2x
+                - We multiply by -1 to go downhill (minimize)
+                
+            c) Update Rules:
+                slope = slope - learning_rate * slope_gradient
+                intercept = intercept - learning_rate * intercept_gradient
+                
+                If prediction too high:
+                - Error is negative
+                - Gradient = -2 * negative = positive
+                - Subtract positive = decrease parameter
+                
+                If prediction too low:
+                - Error is positive
+                - Gradient = -2 * positive = negative
+                - Subtract negative = add positive = increase parameter
 
         Parameters:
         - learning_rate: Size of steps we take
