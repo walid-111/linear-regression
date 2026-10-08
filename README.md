@@ -1,4 +1,4 @@
-# linear_regression
+# linear-regression
 
 Small project to predict the price of a car from its mileage, using a linear regression trained with gradient descent. No sklearn, everything is done by hand with numpy.
 
